@@ -26,48 +26,30 @@
     <div class="container" style="margin-top: 60px;">
         <div class="card">
             <div class="card-header text-light" style="background: #147a50;">
-                <h4>Demo Scenario</h4>
+                <h4>Thank you ...</h4>
             </div>
             <div class="card-body">
-                <h6 class="text-muted card-subtitle mb-2">Personal Data at ACME Corp</h6>
-                <p class="card-text">ACME Corp, an online retailer, collects personal data from customers through a website form. To comply with GDPR regulations and empower users, ACME provides customers like Alice with a Self-Sovereign Identity (SSI) upon form submission. This SSI serves as a digital credential enabling Alice to manage her data privacy preferences. By utilizing the SSI, Alice can revoke consent for data processing at any time, ensuring greater control over her personal information.</p>
+                <h6 class="text-muted card-subtitle mb-2">This is an existing "Thank You Page".&nbsp;</h6>
+                <p class="card-text">In redirect mode the URL is configured in&nbsp;<span class="text-success-emphasis font-monospace">.env</span>&nbsp;. A parameter with the identity is added to the URL.&nbsp;&nbsp;</p>
             </div>
         </div>
         <div class="card" style="margin-top: 25px;">
             <div class="card-header text-dark" style="background: #e6b41e;">
-                <h4>Showcase</h4>
+                <h4>ACME Backend</h4>
             </div>
             <div class="card-body">
-                <form id="testForm" method="post" action="/api/frontend/submit">
-                    <div class="input-group"><span class="input-group-text" style="min-width:200px">Firstname</span><input class="form-control" type="text" value="Alice" name="first_name"></div>
-                    <div class="input-group" style="margin-top: 15px;"><span class="input-group-text" style="min-width:200px">Lastname</span><input class="form-control" type="text" value="Schmidt" name="last_name"></div>
-                    <hr>
-                    <div class="form-check" style="margin-top: 15px;"><input class="form-check-input" type="checkbox" id="consent" required="" name="consent" signature="consent_signature" payload="consent_payload" identity="consent_identity" submit="submit"><label class="form-check-label" for="pivacyConfirmed">By checking this box, I acknowledge that I have successfully downloaded the Self-Sovereign Identity (SSI) with ID "<span class="font-monospace text-truncate" id="ssiAddress">-</span>" and consent to ACME Corp's processing of my personal data as outlined in the Privacy Policy. I understand that I can revoke this consent at any time using the SSI.</label></div>
-                    <hr>
-                    <h4>"Hidden" fields submitted to ACME Corp</h4><small class="form-text">To illustrate how ACME Corp captures and stores user consent, we've made following fields visible. In a real-world scenario, these fields would be populated automatically to provide proof of consent in accordance with privacy laws.</small>
-                    <div class="input-group"><span class="input-group-text" style="min-width:200px">Identity</span><input class="form-control" type="text" id="consent_identity" readonly="" name="consent_identity" disabled="" required=""></div>
-                    <div class="input-group" style="margin-top: 15px;"><span class="input-group-text" style="min-width:200px">Signature</span><input class="form-control" type="text" id="consent_signature" readonly="" name="consent_signature" disabled="" required=""></div>
-                    <div class="input-group" style="margin-top: 15px;"><span class="input-group-text" style="min-width:200px">Payload</span><input class="form-control" type="text" id="consent_payload" readonly="" name="consent_payload" disabled="" required=""></div>
-                    <hr>
-                    <div class="text-center"><button class="btn btn-dark" id="submit" type="submit">Submit to ACME</button></div>
-                </form>
-            </div>
-        </div>
-        <div class="card" style="margin-top:25px;">
-            <div class="card-header text-light" style="background: #147a50;">
-                <h4>tl;dr</h4>
-            </div>
-            <div class="card-body">
-                <h6 class="text-muted card-subtitle mb-2">Implementation at ACME Corp</h6>
-                <p class="card-text">ACME Corp stores user data and associated consent information, including an Identifier. To comply with data privacy regulations, ACME regularly checks if the user has revoked consent using its SSI. This ensures that data is handled in accordance with the user's wishes. It's important to note that ACME doesn't control the SSI; it's owned and managed by the user.</p>
+                <h6 class="text-muted card-subtitle mb-2">Mode "redirect"</h6>
                 <ul>
-                    <li>Form is submitted to <span class="text-success-emphasis font-monospace">/api/frontend/submit</span>&nbsp;of <a href="https://github.com/energychain/tydids-ssi-consent-router" target="_blank">Consent-Router</a>.</li>
-                    <li>Consent-Router will monitor grant/revoke status.</li>
-                    <li>Consent-Router forwards or redirects depending on <span class="text-success-emphasis font-monospace">.env</span>&nbsp;setting to legacy backend</li>
-                    <li>Backend checks&nbsp;<span class="text-success-emphasis font-monospace">/api/frontend/status</span>&nbsp;if consent got revoked or listens to webhook</li>
+                    <li>This page needs to capture the "identity" parameter.</li>
+                    <li>With the identity parameter the given data could retrieved via&nbsp;<span class="text-success-emphasis font-monospace">/api/backend/retrieve</span>&nbsp;(req. bearer token of .env)</li>
+                    <li>REVOKE_WEBHOOK in .env might point to backend to inform about revokes.</li>
                 </ul>
-                <h6 class="text-muted card-subtitle mb-2">Good to know for Alice</h6>
-                <p class="card-text">Alice downloaded her SSI, which gives her full control over her data and consent. She can revoke consent at any time by using her SSI. However, it's essential to understand that revoking consent doesn't immediately delete her data. ACME must process her revocation request and update their systems accordingly. This process might take some time. By maintaining control of her SSI, she ensures her data privacy rights are upheld.</p>
+                <h6 class="text-muted card-subtitle mb-2">Mode "forward"</h6>
+                <ul>
+                    <li>This page is your existing webpage</li>
+                    <li>All fields together with consent got forwarded by the consent-router as HTTP POST request.</li>
+                    <li>consent-router checks the final location an redirects to it.</li>
+                </ul>
             </div>
         </div>
         <div class="row" style="margin-top: 50px;">

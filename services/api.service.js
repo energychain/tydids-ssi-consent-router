@@ -27,15 +27,17 @@ module.exports = {
 
 		routes: [
 			{
-				path: "/frontend",
+				path: "/api",
+				whitelist: ["**"],
 				mergeParams: true,
 				authentication: false,
 				authorization: false,
 				autoAliases: false,
-				aliases: {
-					"POST submit":"consent.submit",
-					"GET status":"consent.status"
+				aliases:{
+					"POST frontend/submit":"frontend.submit",
+					"GET frontend/status":"frontend.status"					
 				},
+				callingOptions: {},
 				bodyParsers: {
 					json: {
 						strict: false,
@@ -46,29 +48,17 @@ module.exports = {
 						limit: "1MB"
 					}
 				},
-				logging:true
-			},
-			{
-				path: "/backend",
-				mergeParams: true,
-				authentication: true,
-				authorization: true,
-				autoAliases: false,
-				aliases: {
-					"GET retrieve":"consent.retrieve"
-				},
-				bodyParsers: {
-					json: {
-						strict: false,
-						limit: "1MB"
-					},
-					urlencoded: {
-						extended: true,
-						limit: "1MB"
+				mappingPolicy: "all",
+				logging:true				
+			},{
+				
+					path: "/api/backend",
+					authorization: true, // Enable authorization for this route
+					aliases: {
+					  "GET /retrieve": "backend.retrieve"
 					}
-				},
-				logging:true
-			}
+				  
+			}			
 		],
 
 		// Do not log client side errors (does not log an error response when the error.code is 400<=X<500)
@@ -102,6 +92,7 @@ module.exports = {
 		 * @returns {Promise}
 		 */
 		async authenticate(ctx, route, req) {
+			console.log('Route',route,req.orignalUrl);
 			// Read the token from header
 			const auth = req.headers["authorization"];
 
@@ -133,13 +124,22 @@ module.exports = {
 		 * @returns {Promise}
 		 */
 		async authorize(ctx, route, req) {
-			// Get the authenticated user.
-			const user = ctx.meta.user;
+			const auth = req.headers["authorization"];
 
-			// It check the `auth` property in action schema.
-			if (req.$action.auth == "required" && !user) {
-				throw new ApiGateway.Errors.UnAuthorizedError("NO_RIGHTS");
+			if (auth && auth.startsWith("Bearer")) {
+				const token = auth.slice(7);				
+				if (token == process.env.BEARER_TOKEN) {					
+					return { id: 1, name: "Backend API User" };
+
+				} else {					
+					throw new ApiGateway.Errors.UnAuthorizedError(ApiGateway.Errors.ERR_INVALID_TOKEN);
+				}
+
+			} else {
+				// No token. Throw an error or do nothing if anonymous access is allowed.
+				throw new ApiGateway.Errors.UnAuthorizedError(ApiGateway.Errors.ERR_NO_TOKEN);				
 			}
+					
 		}
 
 	}
