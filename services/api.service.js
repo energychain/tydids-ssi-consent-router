@@ -57,8 +57,14 @@ module.exports = {
 					aliases: {
 					  "GET /retrieve": "backend.retrieve",
 					  "GET /granted": "backend.granted"
-					}
-				  
+					}				  
+			}, {
+				path: '/api/openapi',
+				aliases: {
+				  'GET /openapi.json': 'openapi.generateDocs', // swagger scheme
+				  'GET /ui': 'openapi.ui', // ui
+				  'GET /assets/:file': 'openapi.assets', // js/css files
+				},
 			}			
 		],
 

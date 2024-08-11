@@ -1,6 +1,6 @@
 {
   "name": "tydids-ssi-consent-router",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "tydids-ssi-consent-router is a lightweight, SSI-based consent management solution. It acts as a proxy between web forms and backend systems, ensuring compliance with GDPR data privacy regulations. The router stores consent data, including SSI IDs and payloads, in a NoSQL database for efficient retrieval and management.",
   "scripts": {
     "dev": "moleculer-runner --hot services/**/*.service.js",
@@ -12,7 +12,7 @@
     "dc:logs": "docker-compose logs -f",
     "dc:down": "docker-compose down",
     "createPrivateKey": "./createPrivateKey.js",
-    "setup":"./setup.js"
+    "setup": "./setup.js"
   },
   "keywords": [
     "microservices",
@@ -29,6 +29,7 @@
     "dotenv": "^16.4.5",
     "ethers": "^4.0.49",
     "moleculer": "^0.14.26",
+    "moleculer-auto-openapi": "^1.1.6",
     "moleculer-web": "^0.10.4",
     "pouchdb": "^9.0.0"
   },
