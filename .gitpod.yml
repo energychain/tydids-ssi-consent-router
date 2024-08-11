@@ -4,6 +4,6 @@ tasks:
 
 ports:
   - name: TyDIDs-Consent-Router
-      port: 3000
-      visibility: public
-      onOpen: open-browser
+    port: 3000
+    visibility: public
+    onOpen: open-browser
