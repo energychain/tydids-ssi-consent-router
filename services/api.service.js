@@ -55,7 +55,8 @@ module.exports = {
 					path: "/api/backend",
 					authorization: true, // Enable authorization for this route
 					aliases: {
-					  "GET /retrieve": "backend.retrieve"
+					  "GET /retrieve": "backend.retrieve",
+					  "GET /granted": "backend.granted"
 					}
 				  
 			}			

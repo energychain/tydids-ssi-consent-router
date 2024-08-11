@@ -34,7 +34,6 @@ module.exports = {
 
 		/**
 		 * If not revoked, Get stored consent by ID 
-		 * TODO: Protect 
 		 * 
 		 * @param {String} identity - Consent ID (identity)
 		 */
@@ -57,6 +56,28 @@ module.exports = {
 					throw new MoleculerError("Consent revoked", 400, "CONSENT_REVOKED");
 				}				
 				return JSON.parse((await db.get(ctx.params.identity)).payload);
+			}
+		},
+		/**
+		 * Returns list of active (granted) identities.
+		 * Does not check for latest status!
+		 */
+		granted: {
+			rest: {
+				method: "GET",
+				path: "/granted"
+			},
+			method:"GET",		
+			/** @param {Context} ctx  */
+			async handler(ctx) {
+				const result = [];
+				const identities = await db.allDocs({include_docs:false});	
+				
+				for(let i=0;i<identities.total_rows;i++) {
+					result.push(identities.rows[i].id);
+				}
+				
+				return result;
 			}
 		}
 	},
