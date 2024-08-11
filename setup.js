@@ -17,7 +17,7 @@ fs.readFile('./sample.env', 'utf8', (err, data) => {
 
   // Replace the PRIVATE_KEY with the new key
   let result = data.replace(/PRIVATE_KEY=.*/, `PRIVATE_KEY=${privateKey}`);
-  result = data.replace(/BEARER_TOKEN=.*/, `BEARER_TOKEN=${bearerToken}`);
+  result = result.replace(/BEARER_TOKEN=.*/, `BEARER_TOKEN=${bearerToken}`);
 
   // Write the result to .env file
   fs.writeFile('.env', result, 'utf8', (err) => {
